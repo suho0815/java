@@ -14,13 +14,22 @@ class Count {
 }
 
 public class CountTest {
-
+	int m = 10;
+	public static void show() {
+		System.out.println("hello");
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		show();
+		int num = 0;
+		Count.totalCount = 10;
 		Count c1 = new Count();
 		Count c2 = new Count();
 		Count c3 = new Count();
 
+		c3.totalCount = 110;
+		
 		c1.count++;
 		Count.totalCount++;
 		c2.count++;
