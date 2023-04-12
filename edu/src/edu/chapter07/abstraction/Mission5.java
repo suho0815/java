@@ -14,21 +14,22 @@ public class Mission5 {
 		int input = sc.nextInt();
 		int won50000 = 0, won10000 = 0, won5000 = 0, won1000 = 0;
 		
-		if((input / 50000) > 0) {
-			won50000 = (input / 50000);
-			input -= (won50000 * 50000);
-		} else if ((input / 10000) > 0){
-			won10000 = (input / 10000);
-			input -= (won10000 * 10000);
-		} else if ((input / 5000) > 0) {
-			won5000 = (input/5000);
-			input -= (won5000 * 5000);
-		} else if ((input / 1000) > 0) { // 왜 검사안함?
-			won1000 = (input / 1000);
-			input -= (won1000 * 1000);
+		while((input / 1000) > 0) {
+			if((input / 50000) > 0) {
+				won50000 = (input / 50000);
+				input -= (won50000 * 50000);
+			} else if ((input / 10000) > 0){
+				won10000 = (input / 10000);
+				input -= (won10000 * 10000);
+			} else if ((input / 5000) > 0) {
+				won5000 = (input/5000);
+				input -= (won5000 * 5000);
+			} else if ((input / 1000) > 0) { 
+				won1000 = (input / 1000);
+				input -= (won1000 * 1000);
+			}
 		}
 		
-		System.out.println((input / 1000) != 0);
 		System.out.println("* 5만원 * " + won50000 + "장");
 		System.out.println("* 1만원 * " + won10000 + "장");
 		System.out.println("* 5천원 * " + won5000 + "장");

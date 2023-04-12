@@ -28,12 +28,16 @@ public class CountTest {
 		Count c2 = new Count();
 		Count c3 = new Count();
 
+		System.out.println(Count.totalCount + " : " + c1.count);
+		
 		c3.totalCount = 110;
 		
 		c1.count++;
 		Count.totalCount++;
+		System.out.println(Count.totalCount + " : " + c1.count);
 		c2.count++;
 		Count.totalCount++;
+		System.out.println(Count.totalCount + " : " + c1.count);
 		c3.count++;
 		Count.totalCount++;
 
