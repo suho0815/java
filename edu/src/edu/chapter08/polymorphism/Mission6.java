@@ -13,9 +13,33 @@ public class Mission6 {
 		System.out.print("입력 : ");
 		int input = sc.nextInt();
 		
-		String output;
-		output = Integer.toBinaryString(input);
-		System.out.println(String.format("-> %s", output));
+		String output = "";
+//		output = Integer.toBinaryString(input);
+//		System.out.println(String.format("-> %s", output));
+		
+		while((input / 2) >= 1) {
+			
+			if ((input % 2) == 1) {
+				output += "1";
+			}else {
+				output += "0"; 
+			}
+			input /=2;
+		}
+		
+		if(input == 1) {
+			output += "1";
+		}else if(input == 0){
+			output += "0";
+		}
+		
+		char[] output1 = output.toCharArray();
+		System.out.print("-> ");
+		for(int i = output1.length - 1; i >= 0; i--) {
+			System.out.print(output1[i]);
+		}
+		
+		
 		
 		sc.close();
 	}
