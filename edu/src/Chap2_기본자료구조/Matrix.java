@@ -2,7 +2,7 @@ package Chap2_기본자료구조;
 
 import java.util.Random;
 
-public class test01 {
+public class Matrix {
 
 	static void getData(int [][]d) {
 		//난수 생성하여 2차원배열에 난수 입력
@@ -32,7 +32,6 @@ public class test01 {
 				a2[i][j] = a[i][j] + a1[i][j];
 			}
 		}
-		
 		return a2;
 	}
 	
@@ -43,13 +42,10 @@ public class test01 {
 		for(int i = 0; i < a.length; i++) {
 			for(int j = 0; j < b[0].length; j++) {
 				for(int k =0; k < a[0].length; k++) {
-					
 					c[i][j] += a[i][k] * b[k][j];
 				}
-				 
 			}
 		}
-		
 		return c;
 	}
 	
@@ -73,11 +69,11 @@ public class test01 {
 		int [][]c = new int[2][6];
 		int [][]d = new int[3][2];
 		
-		System.out.println("행렬 A ");
+		System.out.println("행렬 A");
 		getData(a);
 		showData(a);
 		
-		System.out.println("\n행렬 A1 ");
+		System.out.println("\n행렬 A1");
 		getData(a1);
 		showData(a1);
 		
@@ -85,11 +81,11 @@ public class test01 {
 		getData(b);
 		showData(b);
 		
-		System.out.println("\n행렬 A2 = 행렬 A + 행렬 A1 ");
+		System.out.println("\n행렬 A2 = 행렬 A + 행렬 A1");
 		a2 = addMatrix(a, a1, a2);
 		showData(a2);
 		
-		System.out.println("\n행렬 C = 행렬 A * 행렬 B ");
+		System.out.println("\n행렬 C = 행렬 A * 행렬 B");
 		c = multipleMatrix(a,b,c);
 		showData(c);
 		
