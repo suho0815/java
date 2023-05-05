@@ -41,9 +41,10 @@ public class 메소드배열전달 {
 		
 		for(int i = 0; i < d.length; i++) {
 			for(int j = 0; j < d.length; j++) {
-				if (d[i] < d[j]) {
+				if (d[i] < d[j]) { 
 					swap(d, i, j);
-				}	
+				}
+				
 			}
 		}
 		
