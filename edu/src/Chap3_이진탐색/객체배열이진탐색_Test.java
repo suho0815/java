@@ -105,9 +105,9 @@ public class 객체배열이진탐색_Test {
 			if(data[pc].compareTo(key) == 0) {
 				return pc;
 			}else if(data[pc].compareTo(key) > 0) {
-				pr = pc-1;
-			}else {
 				pl = pc+1;
+			}else {
+				pr = pc-1;
 			}
 		}
 		
