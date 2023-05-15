@@ -2,7 +2,7 @@ package com.ruby.java.ch08;
 
 enum Status {READY, SEND, COMPLETE, CLOSE}
 
-public class EnumTest01 {
+public class EnumTest2 {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
