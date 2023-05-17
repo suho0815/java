@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-//int형 고정 길이 큐
+// int형 고정 길이 큐
 
 class Queue {
 	private List<Integer> que;
@@ -42,7 +42,8 @@ class Queue {
 	public int deque() {
 		try {
 			int p = que.remove(front);
-			front++;
+//			front++;
+			rear--;
 			num--;
 			return p;
 		}catch(EmptyQueueException e) {
@@ -76,11 +77,11 @@ class Queue {
 	}
 	
 }
-class EmptyQueueException extends RuntimeException{
-	public EmptyQueueException() {}
-}
+//class EmptyQueueException extends RuntimeException{
+//	public EmptyQueueException() {}
+//}
 
-//int형 고정 길이 큐의 사용 예
+// int형 고정 길이 큐의 사용 예
 public class 큐정수_test {
 
 	public static void main(String[] args) {
@@ -93,6 +94,7 @@ public class 큐정수_test {
 			System.out.print("(1)인큐　(2)디큐　(3)피크　(4)덤프　(0)종료: ");
 
 			int menu = stdIn.nextInt();
+			
 			if (menu == 0)
 				break;
 
@@ -127,5 +129,7 @@ public class 큐정수_test {
 				break;
 			}
 		}
+		stdIn.close();
+		
 	}
 }

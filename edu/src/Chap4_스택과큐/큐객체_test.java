@@ -5,10 +5,12 @@ package Chap4_스택과큐;
  */
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 
 //int형 고정 길이 큐
 class ObjectQueue {
-    private List<Point> que;  
+    private List<Point1> que;  
 	private int capacity; // 큐의 크기
 	private int front; // 맨 처음 요소 커서
 	private int rear; // 맨 끝 요소 커서
@@ -18,7 +20,7 @@ class ObjectQueue {
 		front = rear = num = 0;
 		capacity = maxlen;
 		try {
-			que = new ArrayList<Point>();
+			que = new ArrayList<Point1>();
 		}catch(OutOfMemoryError e) {
 			capacity = 0;
 		}
@@ -32,7 +34,7 @@ class ObjectQueue {
 		return capacity;
 	}
 
-	public int enque(Point x) {
+	public Point1 enque(Point1 x) {
 		que.add(x);
 		rear++;
 		num++;
@@ -40,10 +42,11 @@ class ObjectQueue {
 		return x;
 	}
 
-	public Point deque() {
+	public Point1 deque() {
 		try {
-			Point p = que.remove(front);
-			front++;
+			Point1 p = que.remove(front);
+//			front++;
+			rear--;
 			num--;
 			return p;
 		}catch(EmptyQueueException e) {
@@ -52,7 +55,7 @@ class ObjectQueue {
 
 	}
 
-	public int peek() {
+	public Point1 peek() {
 		try {
 			return que.get(front);
 		}catch(EmptyQueueException e) {
@@ -66,7 +69,8 @@ class ObjectQueue {
 			System.out.println("큐가 비었습니다.");
 		}else {
 			for(int i = 0; i < num; i++) {
-				System.out.print(que.get(i) + " ");
+				Point1 p = que.get(i);
+				System.out.println(p.getX() + " " + p.getY());
 			}
 		}
 		
@@ -82,11 +86,11 @@ class EmptyQueueException extends RuntimeException{
 	public EmptyQueueException() {}
 }
 
-class Point {
+class Point1 {
 	private int x;
 	private int y;
 	
-	public Point(int x, int y) {
+	public Point1(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -109,7 +113,7 @@ class Point {
 
 	@Override
 	public boolean equals(Object p) {
-		Point px = (Point) p;
+		Point1 px = (Point1) p;
 		if(this.x == px.x && this.y == px.y)
 			return true;
 		else
@@ -122,10 +126,10 @@ public class 큐객체_test {
 
 	public static void main(String[] args) {
 		Scanner stdIn = new Scanner(System.in);
-		objectQueue s = new objectQueue(4); // 최대 64개를 인큐할 수 있는 큐
+		ObjectQueue s = new ObjectQueue(4); // 최대 64개를 인큐할 수 있는 큐
 		Random random = new Random();
 		int rndx = 0, rndy = 0;
-		Point p = null;
+		Point1 p = null;
 		while (true) {
 			System.out.println(" "); // 메뉴 구분을 위한 빈 행 추가
 			System.out.printf("현재 데이터 개수: %d / %d\n", s.size(), s.getCapacity());
@@ -135,21 +139,20 @@ public class 큐객체_test {
 			if (menu == 0)
 				break;
 
-			int x;
 			switch (menu) {
 			case 1: // 인큐
-				System.out.print("데이터: ");
+				
 				rndx = random.nextInt() % 20;
 				rndy = random.nextInt() % 20;
-				p = new Point(rndx,rndy);
+				p = new Point1(rndx,rndy);
 				s.enque(p);
-				
+				System.out.printf("데이터: %d , %d", rndx, rndy);
 				break;
 
 			case 2: // 디큐
 				try {
 					p = s.deque();
-					System.out.println("디큐한 데이터는 " + p + "입니다.");
+					System.out.println("디큐한 데이터는 " + p.getX() + " " + p.getY() + "입니다.");
 				} catch (EmptyQueueException e) {
 					System.out.println("큐가 비어 있습니다.");
 				}
@@ -158,7 +161,7 @@ public class 큐객체_test {
 			case 3: // 피크
 				try {
 					p = s.peek();
-					System.out.println("피크한 데이터는 " + p + "입니다.");
+					System.out.println("피크한 데이터는 " + p.getX() + " " + p.getY() + "입니다.");
 				} catch (EmptyQueueException e) {
 					System.out.println("큐가 비어 있습니다.");
 				}
