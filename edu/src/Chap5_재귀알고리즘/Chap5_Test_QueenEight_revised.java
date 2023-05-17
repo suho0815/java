@@ -170,6 +170,11 @@ public class Chap5_Test_QueenEight_revised {
 
 	public static boolean checkRow(int[][] d, int crow) {
 		
+		for(int i = 0; i < d[0].length; i++) {
+			if(d[crow][i] != 0) {
+				
+			}
+		}
 		
 		return true;
 	}
