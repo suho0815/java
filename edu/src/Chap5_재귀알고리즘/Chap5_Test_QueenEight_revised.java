@@ -147,12 +147,14 @@ public class Chap5_Test_QueenEight_revised {
 		st.push(p);
 		while (count < 8) {
 			ix++;
-			int cy = 0;
+			int cy = 0;//?
 			while (ix < d.length){
 				while (cy < d[0].length) {
-						st.push(p);
-						count++;
-						break;
+//					System.out.println(st.peek().getX() + " " + st.peek().getY());
+					
+					st.push(p);
+					count++;
+					break;
 			
 				}
 				if (cy != d[0].length) {
@@ -169,10 +171,9 @@ public class Chap5_Test_QueenEight_revised {
 	}
 
 	public static boolean checkRow(int[][] d, int crow) {
-		
 		for(int i = 0; i < d[0].length; i++) {
 			if(d[crow][i] != 0) {
-				
+				return false;
 			}
 		}
 		
@@ -180,31 +181,55 @@ public class Chap5_Test_QueenEight_revised {
 	}
 
 	public static boolean checkCol(int[][] d, int ccol) {
-
+		for(int i = 0; i < d[0].length; i++) {
+			if(d[i][ccol] != 0) {
+				return false;
+			}
+		}
+		
 		return true;
 	}
 
 	public static boolean checkDiagSW(int[][] d, int cx, int cy) { //x++, y-- or x--, y++ where 0<= x,y <= 7 (/로 check)
-	
+		for(int i = 0; i < d[0].length; i++) {
+			if(d[cx++][cy--] != 0 || cx >= 0 || cy <= 7) {
+				return false;
+			}
+		}
+		for(int i = 0; i < d[0].length; i++) {
+			if(d[cx--][cy++] != 0 || cx >= 0 || cy <= 7) {
+				return false;
+			}
+		}
 		return true;
 	}
 
 	public static boolean checkDiagSE(int[][] d, int cx, int cy) {//x++, y++ or x--, y-- (\로 check)
-	
+		for(int i = 0; i < d[0].length; i++) {
+			if(d[cx--][cy++] != 0 || cx >= 0 || cy <= 7) {
+				return false;
+			}
+		}
+		for(int i = 0; i < d[0].length; i++) {
+			if(d[cx++][cy--] != 0 || cx >= 0 || cy <= 7) {
+				return false;
+			}
+		}
 		return true;
 	}
     public static boolean CheckMove(int[][]d, int x, int y) {//(x,y)로 이동 가능한지를 check
- 	
-    	
-    	return true;
+    	if(checkRow(d, x) && checkCol(d, y) && checkDiagSW(d, x, y) && checkDiagSE(d, x, y)) {
+    		return true;
+    	}else {
+    		return false;
+    	}
     }
     public static boolean NextMove(int[][]d, int row, int col) {//다음 row에 대하여 이동할 col을 조사
+    	if(CheckMove(d, row, col)) {
+    		return true;
+    	}
     	
-//    	while() {
-//    		CheckMove();
-//    	}
-    	
-    	return true;
+    	return false;
     }
 	public static void main(String[] args) {
 		int row = 8, col = 8;
