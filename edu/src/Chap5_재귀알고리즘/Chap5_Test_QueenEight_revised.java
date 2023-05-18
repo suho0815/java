@@ -138,36 +138,93 @@ class EmptyGenericStackException extends RuntimeException{
 public class Chap5_Test_QueenEight_revised {
 
 	public static void SolveQueen(int[][] d) {
-		int count = 0, mode = 0;
+		int count = 0;
 		int ix = 0, iy = 0;
 		Stack3 st = new Stack3(10);
 		Point p = new Point(ix, iy);
 		d[ix][iy] = 1;
 		count++;
 		st.push(p);
+		
 		while (count < 8) {
 			ix++;
-			int cy = 0;//?
-			while (ix < d.length){
-				while (cy < d[0].length) {
+			int cy = 0;
+			boolean queenPlaced = false;
+			while (ix < d.length ){
+				p = new Point(ix, cy);
+				if (cy < d[0].length ) {
 //					System.out.println(st.peek().getX() + " " + st.peek().getY());
 					
-					st.push(p);
-					count++;
-					break;
-			
-				}
-				if (cy != d[0].length) {
-					break;
+					if(CheckMove(d, ix, cy)) {
+						
+						d[ix][cy] = 1;
+						st.push(p);
+						count++;
+//						cy = 0;
+						queenPlaced = true;
+//						cy++;
+						break;
+					}
+					cy++;
+//					System.out.println(cy);
+					
 				} else {
-				 p = st.pop();
-				 count--;
-
+					if(!st.isEmpty()) {
+						p = st.pop();
+						
+						d[ix][p.getY()] = 0;
+						ix = p.getX();
+						cy = p.getY() +1;
+						count--;
+						queenPlaced = true;
+					}else {
+						break;
+					}
 				}
-
+				
+//				if (cy != d[0].length) {
+//					break;
+//				} else if(!CheckMove(d, ix, cy)){
+//				 p = st.pop();
+//				 d[ix][cy] = 0;
+//				 count--;
+//
+//				}
+//				cy++;
 			}
-
+			if (!queenPlaced) {
+	            if (!st.isEmpty()) {
+	                p = st.pop();
+	                ix = p.getX();
+	                cy = p.getY() + 1;
+	                d[ix][p.getY()] = 0;
+	                count--;
+	            } else {
+	                // All possibilities have been explored, and no more queens can be placed
+	                break;
+	            }
+	        }
+			
 		}
+
+//		for(int i = 0; i < d.length; i++) {
+//			for(int j = 0; j < d[0].length; j++) {
+//				if(count >= 8) { // 퀸이 모두 배치되어있으면 루프 탈출
+//					break;
+//				}else if(CheckMove(d, i, j)) { // 퀸을 놓을 수 있는지 검사 후 스택에 푸쉬
+//					p = new Point(i, j);
+//					count++;
+//					d[i][j] = 1;
+//					st.push(p);
+//				}
+//				
+//				
+//			}
+//		}
+
+
+		
+		
 	}
 
 	public static boolean checkRow(int[][] d, int crow) {
