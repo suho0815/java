@@ -23,17 +23,17 @@ class Stack3{
 		}
 	}
 	
-	public int push(Point x) throws OverflowIntStackException {
+	public int push(Point x) throws OverflowGenericStackException {
 		if(top >= capacity) {
-			throw new OverflowIntStackException();
+			throw new OverflowGenericStackException();
 		}
 		data.add(x);
 		return top++;
 	}
 	
-	public Point pop() throws EmptyIntStackException {
+	public Point pop() throws EmptyGenericStackException {
 		if(top <= 0) {
-			throw new EmptyIntStackException();
+			throw new EmptyGenericStackException();
 		}
 		//Point p = data.get(top--);
 		Point p = data.remove(top-1);
@@ -41,9 +41,9 @@ class Stack3{
 		return p;
 	}
 	
-	public Point peek() throws EmptyIntStackException {
+	public Point peek() throws EmptyGenericStackException {
 		if(top <= 0) {
-			throw new EmptyIntStackException();
+			throw new EmptyGenericStackException();
 		}
 		return data.get(top-1);
 	}
@@ -137,99 +137,142 @@ class EmptyGenericStackException extends RuntimeException{
 
 public class Chap5_Test_QueenEight_revised {
 
+	static final int numberQueens = 4;
+	
 	public static void SolveQueen(int[][] d) {
-		int count = 0;
+		int count = 0, mode = 0;
 		int ix = 0, iy = 0;
 		Stack3 st = new Stack3(10);
 		Point p = new Point(ix, iy);
-		d[ix][iy] = 1;
-		count++;
+		d[ix][iy] = 1; count++;
 		st.push(p);
-		
-		while (count < 8) {
-			ix++;
-			int cy = 0;
-			boolean queenPlaced = false;
-			while (ix < d.length ){
-				p = new Point(ix, cy);
-				if (cy < d[0].length ) {
-//					System.out.println(st.peek().getX() + " " + st.peek().getY());
+		while (count < numberQueens) {
+			ix++;		int cy = 0;
+			while (ix < numberQueens){
+				cy = nextMove(d, ix);
+				if(st.peek().getY() == cy && ix == st.peek().getX()) {
+//				if(ix == st.peek().getX()) {
+					p = st.pop(); count--;
+					//d[p.getX()][p.getY()] = 0;
+					//for(int i = st.peek().getY(); i < d[0].length; i++ ) {
+						//checkMove(d, ix, i)
+					//}
 					
-					if(CheckMove(d, ix, cy)) {
-						
-						d[ix][cy] = 1;
-						st.push(p);
-						count++;
-//						cy = 0;
-						queenPlaced = true;
-//						cy++;
-						break;
-					}
 					cy++;
-//					System.out.println(cy);
-					
-				} else {
-					if(!st.isEmpty()) {
-						p = st.pop();
-						
-						d[ix][p.getY()] = 0;
-						ix = p.getX();
-						cy = p.getY() +1;
-						count--;
-						queenPlaced = true;
-					}else {
-						break;
-					}
 				}
 				
-//				if (cy != d[0].length) {
-//					break;
-//				} else if(!CheckMove(d, ix, cy)){
-//				 p = st.pop();
-//				 d[ix][cy] = 0;
-//				 count--;
-//
+//				if(p.getY() == cy) {
+//					cy++;
 //				}
-//				cy++;
-			}
-			if (!queenPlaced) {
-	            if (!st.isEmpty()) {
-	                p = st.pop();
-	                ix = p.getX();
-	                cy = p.getY() + 1;
-	                d[ix][p.getY()] = 0;
-	                count--;
-	            } else {
-	                // All possibilities have been explored, and no more queens can be placed
-	                break;
-	            }
-	        }
+				
+				while (cy < numberQueens) {
+						Point px = new Point(ix, cy);
+						st.push(px); count++;
+						st.dump();
+						
+						break;
 			
-		}
+				}
+				if (cy != -1) { // 퀸을 놓을 곳이 없으면
+					d[st.peek().getX()][st.peek().getY()] = 1;
+					break;
+				} else {
+					
+				 p = st.pop();	 count--;
+				 d[st.peek().getX()][st.peek().getY()] = 0;
+				 
+				 ix--;
+				 
+				}
 
-//		for(int i = 0; i < d.length; i++) {
-//			for(int j = 0; j < d[0].length; j++) {
-//				if(count >= 8) { // 퀸이 모두 배치되어있으면 루프 탈출
-//					break;
-//				}else if(CheckMove(d, i, j)) { // 퀸을 놓을 수 있는지 검사 후 스택에 푸쉬
-//					p = new Point(i, j);
-//					count++;
-//					d[i][j] = 1;
-//					st.push(p);
+			}
+		}
+	}
+	
+//	public static void SolveQueen(int[][] d) {
+//		int count = 0;
+//		int ix = 0, iy = 0;
+//		Stack3 st = new Stack3(10);
+//		Point p = new Point(ix, iy);
+//		d[ix][iy] = 1;
+//		count++;
+//		st.push(p);
+//		
+//		while (count < 8) {
+//			ix++;
+//			int cy = 0;
+//			
+//			while (ix < d.length ){
+//				p = new Point(ix, cy);
+//				if (cy < d[0].length ) {
+////					System.out.println(st.peek().getX() + " " + st.peek().getY());
+//					
+//					if(CheckMove(d, ix, cy)) {
+//						
+//						d[ix][cy] = 1;
+//						st.push(p);
+//						count++;
+//						cy = 0;
+//						
+//						cy++;
+//						break;
+//					}
+////					cy++;
+//					System.out.println(cy);
+//					
+//				} else {
+//					if(!st.isEmpty()) {
+//						p = st.pop();
+//						
+//						d[ix][p.getY()] = 0;
+//						ix = p.getX();
+//						cy = p.getY() +1;
+//						count--;
+//						
+//					}else {
+//						break;
+//					}
 //				}
 //				
-//				
+////				if (cy != d[0].length) {
+////					break;
+////				} else if(!CheckMove(d, ix, cy)){
+////				 p = st.pop();
+////				 d[ix][cy] = 0;
+////				 count--;
+////
+////				}
+////				cy++;
 //			}
+//			
+//			
 //		}
-
-
-		
-		
-	}
+//
+////		for(int i = 0; i < d.length; i++) {
+////			for(int j = 0; j < d[0].length; j++) {
+////				if(count >= 8) { // 퀸이 모두 배치되어있으면 루프 탈출
+////					break;
+////				}else if(CheckMove(d, i, j)) { // 퀸을 놓을 수 있는지 검사 후 스택에 푸쉬
+////					p = new Point(i, j);
+////					count++;
+////					d[i][j] = 1;
+////					st.push(p);
+////				}
+////				
+////				
+////			}
+////		}
+//
+//
+////		System.out.println("count : "+ count);
+//		
+//	}
 
 	public static boolean checkRow(int[][] d, int crow) {
-		for(int i = 0; i < d[0].length; i++) {
-			if(d[crow][i] != 0) {
+		//배열 d에서 crow에 Queen을 놓을 수 있나?
+		
+		for(int i = 0; i < d.length; i++) {
+			if(d[crow][i] == 1) {
 				return false;
 			}
 		}
@@ -238,6 +281,7 @@ public class Chap5_Test_QueenEight_revised {
 	}
 
 	public static boolean checkCol(int[][] d, int ccol) {
+		//배열 d에 ccol 열에 배치 할 수 있나? 있다면 true 아니면 false
 		for(int i = 0; i < d[0].length; i++) {
 			if(d[i][ccol] != 0) {
 				return false;
@@ -247,50 +291,78 @@ public class Chap5_Test_QueenEight_revised {
 		return true;
 	}
 
-	public static boolean checkDiagSW(int[][] d, int cx, int cy) { //x++, y-- or x--, y++ where 0<= x,y <= 7 (/로 check)
-		for(int i = 0; i < d[0].length; i++) {
-			if(d[cx++][cy--] != 0 || cx >= 0 || cy <= 7) {
-				return false;
-			}
+	public static boolean checkDiagSW(int[][] d, int x, int y) { //x++, y-- or x--, y++ where 0<= x,y <= 7 (/로 check)
+		//배열 d에 d[cx][cy]의 SW대각선에 배치 가능하냐?
+		
+		int cx = x, cy = y;
+		while(cx >= 0 && cx < d.length && cy >= 0 && cy < d.length) {
+			if(d[cx][cy] == 1) return false;
+			cx++; cy--;
 		}
-		for(int i = 0; i < d[0].length; i++) {
-			if(d[cx--][cy++] != 0 || cx >= 0 || cy <= 7) {
-				return false;
-			}
+		cx = x; cy = y;
+		while(cx >= 0 && cx < d.length && cy >= 0 && cy < d.length) {
+			if(d[cx][cy] == 1) return false;
+			cx--; cy++;
 		}
+		
+		
+//		for(int i = 0; i < d[0].length; i++) {
+//			if(d[cx++][cy--] != 0 || cx > 0 || cy < 7) {
+//				return false;
+//			}
+//		}
+//		for(int i = 0; i < d[0].length; i++) {
+//			if(d[cx--][cy++] != 0 || cx > 0 || cy < 7) {
+//				return false;
+//			}
+//		}
 		return true;
 	}
 
-	public static boolean checkDiagSE(int[][] d, int cx, int cy) {//x++, y++ or x--, y-- (\로 check)
-		for(int i = 0; i < d[0].length; i++) {
-			if(d[cx--][cy++] != 0 || cx >= 0 || cy <= 7) {
-				return false;
-			}
+	public static boolean checkDiagSE(int[][] d, int x, int y) {//x++, y++ or x--, y-- (\로 check)
+
+		int cx = x, cy = y;
+		while(cx >= 0 && cx < d.length && cy >= 0 && cy < d.length) {
+			if(d[cx][cy] == 1) return false;
+			cx++; cy++;
 		}
-		for(int i = 0; i < d[0].length; i++) {
-			if(d[cx++][cy--] != 0 || cx >= 0 || cy <= 7) {
-				return false;
-			}
+		cx = x; cy = y;
+		while(cx >= 0 && cx < d.length && cy >= 0 && cy < d.length) {
+			if(d[cx][cy] == 1) return false;
+			cx--; cy--;
 		}
+		
+		//		for(int i = 0; i < d[0].length; i++) {
+//			if(d[cx--][cy++] != 0 || cx > 0 || cy < 7) {
+//				return false;
+//			}
+//		}
+//		for(int i = 0; i < d[0].length; i++) {
+//			if(d[cx++][cy--] != 0 || cx > 0 || cy < 7) {
+//				return false;
+//			}
+//		}
 		return true;
 	}
-    public static boolean CheckMove(int[][]d, int x, int y) {//(x,y)로 이동 가능한지를 check
+    public static boolean checkMove(int[][]d, int x, int y) {//(x,y)로 이동 가능한지를 check
     	if(checkRow(d, x) && checkCol(d, y) && checkDiagSW(d, x, y) && checkDiagSE(d, x, y)) {
     		return true;
     	}else {
     		return false;
     	}
     }
-    public static boolean NextMove(int[][]d, int row, int col) {//다음 row에 대하여 이동할 col을 조사
-    	if(CheckMove(d, row, col)) {
-    		return true;
+    public static int nextMove(int[][]d, int row) {//다음 row에 대하여 이동할 col을 조사
+    	for(int i = 0; i < d.length; i++) {
+    		if(checkMove(d, row, i)) {
+        		return i;
+        	}
     	}
     	
-    	return false;
+    	return -1;
     }
 	public static void main(String[] args) {
-		int row = 8, col = 8;
-		int[][] data = new int[8][8];
+		int row = numberQueens, col = numberQueens;
+		int[][] data = new int[row][col];
 		for (int i = 0; i < data.length; i++)
 			for (int j = 0; j < data[0].length; j++)
 				data[i][j] = 0;
