@@ -137,10 +137,10 @@ class EmptyGenericStackException extends RuntimeException{
 
 public class Chap5_Test_QueenEight_revised {
 
-	static final int numberQueens = 4;
+	static final int numberQueens = 8;
 	
 	public static void SolveQueen(int[][] d) {
-		int count = 0, mode = 0;
+		int count = 0;
 		int ix = 0, iy = 0;
 		Stack3 st = new Stack3(10);
 		Point p = new Point(ix, iy);
@@ -148,23 +148,55 @@ public class Chap5_Test_QueenEight_revised {
 		st.push(p);
 		while (count < numberQueens) {
 			ix++;		int cy = 0;
+			
 			while (ix < numberQueens){
 				cy = nextMove(d, ix);
-				if(st.peek().getY() == cy && ix == st.peek().getX()) {
-//				if(ix == st.peek().getX()) {
-					p = st.pop(); count--;
-					//d[p.getX()][p.getY()] = 0;
-					//for(int i = st.peek().getY(); i < d[0].length; i++ ) {
-						//checkMove(d, ix, i)
-					//}
-					
-					cy++;
-				}
-				
-//				if(p.getY() == cy) {
+
+//				if(st.peek().getY() == cy && ix == st.peek().getX()) {
+//					p = st.pop(); count--;
 //					cy++;
 //				}
 				
+				if(ix == st.peek().getX()) {
+					p = st.pop(); count--;
+					
+					for(int i = p.getY(); i < numberQueens; i++) {
+						if(checkMove(d, ix, i)) {
+//						if(i == p.getY()) {
+							cy = i + 1;
+							break;
+						}	
+//						if(checkMove(d, ix, i)) {
+//							cy = i;
+//							break;
+//						}
+					}
+					if(cy >= numberQueens) {
+						ix = ix + 1; count++;
+						if(ix >= numberQueens) {
+							return;
+						}
+						cy = nextMove(d, ix);
+					}
+				}
+				
+				
+//				for(int i = cy; i < numberQueens ; i++) {
+//					if(ix == st.peek().getX() && i == st.peek().getY()) {
+//						p = st.pop(); count--;
+//						cy = i + 1;
+//						if(!checkMove(d, ix, cy)) {
+//							d[p.getX()][p.getY()] = 1;
+//							st.push(p); count++;
+//							
+//							ix++; cy = nextMove(d, ix);
+//							break;
+//						}else {
+//							break;
+//						}
+//					}
+//				}
+
 				while (cy < numberQueens) {
 						Point px = new Point(ix, cy);
 						st.push(px); count++;
@@ -177,7 +209,6 @@ public class Chap5_Test_QueenEight_revised {
 					d[st.peek().getX()][st.peek().getY()] = 1;
 					break;
 				} else {
-					
 				 p = st.pop();	 count--;
 				 d[st.peek().getX()][st.peek().getY()] = 0;
 				 
@@ -305,17 +336,6 @@ public class Chap5_Test_QueenEight_revised {
 			cx--; cy++;
 		}
 		
-		
-//		for(int i = 0; i < d[0].length; i++) {
-//			if(d[cx++][cy--] != 0 || cx > 0 || cy < 7) {
-//				return false;
-//			}
-//		}
-//		for(int i = 0; i < d[0].length; i++) {
-//			if(d[cx--][cy++] != 0 || cx > 0 || cy < 7) {
-//				return false;
-//			}
-//		}
 		return true;
 	}
 
@@ -332,16 +352,6 @@ public class Chap5_Test_QueenEight_revised {
 			cx--; cy--;
 		}
 		
-		//		for(int i = 0; i < d[0].length; i++) {
-//			if(d[cx--][cy++] != 0 || cx > 0 || cy < 7) {
-//				return false;
-//			}
-//		}
-//		for(int i = 0; i < d[0].length; i++) {
-//			if(d[cx++][cy--] != 0 || cx > 0 || cy < 7) {
-//				return false;
-//			}
-//		}
 		return true;
 	}
     public static boolean checkMove(int[][]d, int x, int y) {//(x,y)로 이동 가능한지를 check
@@ -352,7 +362,7 @@ public class Chap5_Test_QueenEight_revised {
     	}
     }
     public static int nextMove(int[][]d, int row) {//다음 row에 대하여 이동할 col을 조사
-    	for(int i = 0; i < d.length; i++) {
+    	for(int i = 0; i < d[0].length; i++) {
     		if(checkMove(d, row, i)) {
         		return i;
         	}
