@@ -134,10 +134,9 @@ class EmptyGenericStackException extends RuntimeException{
 	public EmptyGenericStackException() {}
 }
 
-
 public class Chap5_Test_QueenEight_revised {
 
-	static final int numberQueens = 4;
+	static final int numberQueens = 8;
 	
 	public static void SolveQueen(int[][] d) {
 		int count = 0;
@@ -147,44 +146,42 @@ public class Chap5_Test_QueenEight_revised {
 		d[ix][iy] = 1; count++;
 		st.push(p);
 		while (count < numberQueens) {
-			ix++;		int cy = 0;
+			ix++;		int cy = nextMove(d, ix, 0);
 			
 			while (ix < numberQueens){
-				cy = nextMove(d, ix);
 				
-				if(ix == st.peek().getX()) {
-					p = st.pop(); count--;
-					for(int i = p.getY() + 1; i < numberQueens; i++) {
-						if(checkMove(d, ix, i)) {
-							cy = i + 1;
-							break;
-						}
-					}
-					if(cy >= numberQueens || cy == -1) {
-						ix = ix + 1; count++;
-						if(ix >= numberQueens) {
-							return;
-						}
-						cy = nextMove(d, ix);
-					}
-				}
+//				if(ix == st.peek().getX()) {
+//					p = st.pop(); count--;
+//					for(int i = p.getY() + 1; i < numberQueens; i++) {
+//						if(checkMove(d, ix, i)) {
+//							cy = i + 1;
+//							break;
+//						}
+//					}
+//					if(cy >= numberQueens || cy == -1) {
+//						ix = ix + 1; count++;
+//						if(ix >= numberQueens) {
+//							return;
+//						}
+//						cy = nextMove(d, ix);
+//					}
+//				}
 
-				while (cy < numberQueens) {
+				if(cy < numberQueens) {
 						Point px = new Point(ix, cy);
 						st.push(px); count++;
 						st.dump();
-						
-						break;
+//						break;
 			
 				}
-				if (cy != -1) { // 퀸을 놓을 곳이 없으면
+				if (cy != d[0].length) { 
 					d[st.peek().getX()][st.peek().getY()] = 1;
 					break;
-				} else {
+				} else {// 퀸을 놓을 곳이 없으면
 				 p = st.pop();	 count--;
-				 d[st.peek().getX()][st.peek().getY()] = 0;
+				 d[p.getX()][p.getY()] = 0;
 				 ix--;
-				 
+				 cy = nextMove(d, ix, p.getY() + 1);
 				}
 
 			}
@@ -332,14 +329,14 @@ public class Chap5_Test_QueenEight_revised {
     		return false;
     	}
     }
-    public static int nextMove(int[][]d, int row) {//다음 row에 대하여 이동할 col을 조사
-    	for(int i = 0; i < d[0].length; i++) {
+    public static int nextMove(int[][]d, int row, int col) {//다음 row에 대하여 이동할 col을 조사
+    	for(int i = col; i < d[0].length; i++) {
     		if(checkMove(d, row, i)) {
         		return i;
         	}
     	}
     	
-    	return -1;
+    	return d[0].length;
     }
 	public static void main(String[] args) {
 		int row = numberQueens, col = numberQueens;
