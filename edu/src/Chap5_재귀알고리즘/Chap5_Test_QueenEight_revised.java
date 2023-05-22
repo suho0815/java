@@ -137,7 +137,7 @@ class EmptyGenericStackException extends RuntimeException{
 
 public class Chap5_Test_QueenEight_revised {
 
-	static final int numberQueens = 8;
+	static final int numberQueens = 4;
 	
 	public static void SolveQueen(int[][] d) {
 		int count = 0;
@@ -151,27 +151,16 @@ public class Chap5_Test_QueenEight_revised {
 			
 			while (ix < numberQueens){
 				cy = nextMove(d, ix);
-
-//				if(st.peek().getY() == cy && ix == st.peek().getX()) {
-//					p = st.pop(); count--;
-//					cy++;
-//				}
 				
 				if(ix == st.peek().getX()) {
 					p = st.pop(); count--;
-					
-					for(int i = p.getY(); i < numberQueens; i++) {
+					for(int i = p.getY() + 1; i < numberQueens; i++) {
 						if(checkMove(d, ix, i)) {
-//						if(i == p.getY()) {
 							cy = i + 1;
 							break;
-						}	
-//						if(checkMove(d, ix, i)) {
-//							cy = i;
-//							break;
-//						}
+						}
 					}
-					if(cy >= numberQueens) {
+					if(cy >= numberQueens || cy == -1) {
 						ix = ix + 1; count++;
 						if(ix >= numberQueens) {
 							return;
@@ -179,23 +168,6 @@ public class Chap5_Test_QueenEight_revised {
 						cy = nextMove(d, ix);
 					}
 				}
-				
-				
-//				for(int i = cy; i < numberQueens ; i++) {
-//					if(ix == st.peek().getX() && i == st.peek().getY()) {
-//						p = st.pop(); count--;
-//						cy = i + 1;
-//						if(!checkMove(d, ix, cy)) {
-//							d[p.getX()][p.getY()] = 1;
-//							st.push(p); count++;
-//							
-//							ix++; cy = nextMove(d, ix);
-//							break;
-//						}else {
-//							break;
-//						}
-//					}
-//				}
 
 				while (cy < numberQueens) {
 						Point px = new Point(ix, cy);
@@ -211,7 +183,6 @@ public class Chap5_Test_QueenEight_revised {
 				} else {
 				 p = st.pop();	 count--;
 				 d[st.peek().getX()][st.peek().getY()] = 0;
-				 
 				 ix--;
 				 
 				}
