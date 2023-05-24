@@ -1,16 +1,140 @@
 package Chap5_재귀알고리즘;
+
+import java.util.ArrayList;
+import java.util.List;
+
 enum Directions {N, NE, E, SE, S, SW, W, NW}
+
+class StackList{
+    private List<Items> data;           // 스택용 배열
+	private int capacity; // 스택의 크기
+	private int top; // 스택 포인터
+	
+	public StackList(int maxlen) {
+		top = 0;
+		capacity = maxlen;
+		try {
+			data = new ArrayList<Items>();
+		}catch(OutOfMemoryError e) {
+			capacity = 0;
+		}
+	}
+	
+	public int push(Items x) throws OverflowGenericStackException {
+		if(top >= capacity) {
+			throw new OverflowGenericStackException();
+		}
+		data.add(x);
+		return top++;
+	}
+	
+	public Items pop() throws EmptyGenericStackException {
+		if(top <= 0) {
+			throw new EmptyGenericStackException();
+		}
+		//Point p = data.get(top--);
+		Items p = data.remove(top-1);
+		top--;
+		return p;
+	}
+	
+	public Items peek() throws EmptyGenericStackException {
+		if(top <= 0) {
+			throw new EmptyGenericStackException();
+		}
+		return data.get(top-1);
+	}
+	
+	public void clear() {
+		top = 0;
+	}
+
+	public int indexOf(Point x) {
+		for(int i = top -1; i >= 0; i--) {
+			if(data.get(i).equals(x)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	public int size() {
+		return top;
+	}
+	
+	public boolean isEmpty() {
+		return top <= 0;
+	}
+	
+	public boolean isFull() {
+		return top >= capacity;
+	}
+	
+	public void dump() {
+		if(isEmpty())
+//		if(ptr <= 0)
+			System.out.println("stack이 비었습니다.");
+		else {
+			for(int i = 0; i < top; i++) {
+				System.out.print(data.get(i).getX() + " " + data.get(i).getY() + " " + data.get(i).getDir());
+				System.out.println();
+			}
+		}
+	}
+	
+	public int getCapacity() {
+		return capacity;
+	}
+	
+}
+
 class Items { //
 	int x;
 	int y;
-	int dir;
+	int dir; // 방향?
+	
+	public Items(int x, int y, int dir) {
+		this.x = x;
+		this.y = y;
+		this.dir = dir; 
+	}
+	
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public int getDir() {
+		return dir;
+	}
+
+	public void setDir(int dir) {
+		this.dir = dir;
+	}
 
 }
 class Offsets { //
 	int a;
 	int b;
-	MazingProblem_test.java
+	
+	public Offsets(int a, int b) {
+		this.a = a;
+		this.b = b;
+	}
+	
 }
+
 public class MazingProblem_test {
 
 	static Offsets[] moves = new Offsets[8];//static을 선언하는 이유를 알아야 한다
@@ -25,25 +149,38 @@ public class MazingProblem_test {
 		temp.dir = 2;//E:: 2
 		mark[temp.x][temp.y] = 2;//미로 찾기 궤적은 2로 표시
 		st.push(temp);
-
-		while (!st.isEmpty()) // stack not empty
-		{
+		
+		while (!st.isEmpty()) { // stack not empty
+		
 			Items tmp = st.pop(); // unstack
 			int i = tmp.x;
 			int j = tmp.y;
 			int d = tmp.dir;
 			mark[i][j] = 1;//backtracking 궤적은 1로 표시
-			while (d < 8) // moves forward
-			{
+			while (d < 8) {// moves forward
+				int g = i + moves[d].a;
+                int h = j + moves[d].b;
 
-				if ((g == ix) && (h == iy)) { // reached exit
-												// output path
-
+				if ((g == ix) && (h == iy)) { // reached exit 미로 탙출하면
+												// output path 미로 이동경로 결과 출력
+                    mark[g][h] = 2;
+                    st.dump();
+                    System.out.println("exit: " + ix + " " + iy);
+                    return;
 				}
 				if ((maze[g][h] == 0) && (mark[g][h] == 0)) { // new position
-					
-
-				} else
+					mark[g][h] = 2;
+//                    temp.x = i;
+//                    temp.y = j;
+//                    temp.dir = d + 1;
+					Items temp1 = new Items(i, j, d+1);
+                    st.push(temp1);
+                    i = g;
+                    j = h;
+                    d = 0;
+				} else {
+					d++;
+				}
 				
 			}
 		}
@@ -82,7 +219,14 @@ public class MazingProblem_test {
 		//d = d + 1;//java는 지원안됨
 		for (int i = 0; i < 14; i++) {
 			for (int j = 0; j < 17; j++) {
-		
+//				maze[i][j] = input[i][j];
+				if ((i == 0) || (j == 0) || (i == 13) || (j == 16))
+					maze[i][j] = 1;
+				else {
+					maze[i][j] = input[i - 1][j - 1];
+				}
+					
+				mark[i][j] = 0;
 
 			}
 		}
@@ -90,7 +234,7 @@ public class MazingProblem_test {
 		for (int i = 0; i <= 13; i++) {
 			for (int j = 0; j <= 16; j++) {
 				System.out.print(maze[i][j] + " ");
-
+				
 			}
 			System.out.println();
 		}

@@ -129,7 +129,8 @@ public class MazingProblem_test2 {
                 int h = j + moves[d].b;
 
                 if ((g == m) && (h == p)) {
-                    System.out.println(stack);
+                    temp = stack.pop();
+                    
                     System.out.println("the term near the exit: " + i + " " + j);
                     System.out.println("exit: " + m + " " + p);
                     return;
