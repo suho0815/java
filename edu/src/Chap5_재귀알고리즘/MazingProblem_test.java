@@ -164,7 +164,7 @@ public class MazingProblem_test {
 				if ((g == ix) && (h == iy)) { // reached exit 미로 탙출하면
 												// output path 미로 이동경로 결과 출력
                     mark[g][h] = 2;
-                    st.dump();
+//                    st.dump();
                     System.out.println("exit: " + ix + " " + iy);
                     return;
 				}
