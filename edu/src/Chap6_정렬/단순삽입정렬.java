@@ -3,7 +3,7 @@ package Chap6_정렬;
 import java.util.Random;
 
 public class 단순삽입정렬 {
-	//단순 삽입 정렬 : 선택한 요소를 앞쪽의 알맞는 위치에 삽입하는 작업을 반복하는 알고리즘
+	//단순 삽입 정렬 : 선택한 요소를 앞쪽의 알맞는 위치에 삽입하는 작업을 반복하는 알고리즘(버블 정렬과 비슷)
 	
 	static void getData(int []d) {
 		//난수 생성하여 배열에 입력
