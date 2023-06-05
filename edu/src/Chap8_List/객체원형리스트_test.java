@@ -1,9 +1,4 @@
-package Chap9_List;
-
-public class 객체원형리스트_test {
-
-}
-package Chap9_List;
+package Chap8_List;
 
 /*
  * 정수 리스트 > 객체 리스트> 객체 원형 리스트
@@ -79,29 +74,109 @@ class CircularList {
 	Node3 first;
 
 	public CircularList() { //head node
-
+		first = null;
 	}
 
-	public int Delete(SimpleObject3 element, Comparator<SimpleObject3> cc) // delete the element
-	{
-
+	public String Delete(SimpleObject3 element, Comparator<SimpleObject3> cc) {// delete the element
+		Node3 pre = first; //노드 앞
+		Node3 ptr = first; //뒤
+		
+		while (pre != null) {
+			//첫 번째 일 때
+			
+			if (cc.compare(first.data, element) == 0) {
+				while(pre.link != first) {
+					ptr = pre;
+					pre = pre.link;
+				}
+				ptr = pre;
+				pre = pre.link;
+				ptr.link = first.link;
+				first = ptr.link;
+				return pre.data.toString();
+			}
+			// 중간일 때
+			if(cc.compare(pre.data, element) == 0 && pre.link != first) {
+				ptr.link = pre.link;
+				return pre.data.toString();
+			}
+			//마지막 일 때		
+			if(cc.compare(pre.data, element) == 0 && pre.link == first) {
+				ptr.link = first;
+				return pre.data.toString();
+			}
+			ptr = pre;
+			pre = pre.link;
+		}
+		
+		return "실패";
 	}
 
 	public void Show() { // 전체 리스트를 순서대로 출력한다.
-
+		Node3 pre = first;
+		
+		if (pre == null) {
+	        return;
+	    }
+		
+		do{
+			System.out.println(pre.data.toString());
+			pre = pre.link;
+		}while (pre != first);
+		
 	}
 
-	public void Add(SimpleObject3 element, Comparator<SimpleObject3> cc) // 임의 값을 삽입할 때 리스트가 오름차순으로 정렬이 되도록 한다
-	{
+	public void Add(SimpleObject3 element, Comparator<SimpleObject3> cc) {// 임의 값을 삽입할 때 리스트가 오름차순으로 정렬이 되도록 한다
+		Node3 nd = new Node3(element);
+		Node3 p = first, q = null;
+		
+		if(p == null) { // 첫번째에 노드를 삽입해야 하면 삽입 후 종료
+			first = nd;
+			nd.link = first; //첫 노드 이므로 자기자신을 가르킴
+			return;
+		}
+		// 중간에 노드를 삽입
+		// element가 더 크면 다음 노드로 이동
+		while (p.link != first && cc.compare(p.data, element) < 0) {
+	        q = p;
+	        p = p.link;
+	    }
 
+        // 삽입할 위치를 찾았을 때
+	    if (cc.compare(p.data, element) >= 0) { 
+	        nd.link = p;
+	        if (q != null) { //이전 노드가 있으면
+	            q.link = nd;
+	        } else { // 이전 노드가 없으면 (노드가 제일 앞쪽에 배치되어야 할 경우)
+	        	while(p.link != first) { // 맨끝의 노드로 이동
+	            	p = p.link;
+	            }
+	        	p.link = nd; // 맨끝 노드가 가르키는 곳을 first로  
+	            first = nd; 
+	        }
+	    } else { // 마지막에 노드를 삽입할 때
+	        p.link = nd;
+	        nd.link = first;
+	    }
+		
 	}
 
 	public boolean Search(SimpleObject3 element, Comparator<SimpleObject3> cc) { // 전체 리스트를 순서대로 출력한다.
-
+		Node3 pre = first;
+		
+		do{
+			if(cc.compare(pre.data, element) == 0 ) {
+				return true;
+			}
+			pre = pre.link;
+		}while(pre != first);
+		
+		return false;
+		
 	}
 }
 
-public class 객체원형리스트 {
+public class 객체원형리스트_test {
 	enum Menu {
 		Add("삽입"), Delete("삭제"), Show("인쇄"), Search("검색"), Exit("종료");
 
@@ -157,7 +232,7 @@ public class 객체원형리스트 {
 			case Delete: // 머리 노드 삭제
 				data = new SimpleObject3();
 				data.scanData("삭제", SimpleObject3.NO);
-				int num = l.Delete(data, SimpleObject3.NO_ORDER);
+				String num = l.Delete(data, SimpleObject3.NO_ORDER);
 				System.out.println("삭제된 데이터 성공은 " + num);
 				break;
 			case Show: // 꼬리 노드 삭제

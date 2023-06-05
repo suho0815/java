@@ -5,43 +5,6 @@ package Chap8_List;
 import java.util.Comparator;
 import java.util.Scanner;
 
-class Fruit {
-	String name;
-	int price;
-	String expire;
-	
-	public Fruit(String name, int price, String expire) {
-		this.name = name;
-		this.price = price;
-		this.expire = expire;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getPrice() {
-		return price;
-	}
-
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
-	public String getExpire() {
-		return expire;
-	}
-
-	public void setExpire(String expire) {
-		this.expire = expire;
-	}
-	
-}
-
 class SimpleObject {
 	static final int NO = 1; // 번호를 읽어 들일까요?
 	static final int NAME = 2; // 이름을 읽어 들일까요?
@@ -53,9 +16,11 @@ class SimpleObject {
 	public String toString() {
 		return "(" + no + ") " + name;
 	}
-	public SimpleObject() {
+	public SimpleObject() { // 생성자
 		no = null;name = null;
 	}
+	
+		
 	// --- 데이터를 읽어 들임 ---//
 	void scanData(String guide, int sw) {
 		Scanner sc = new Scanner(System.in);
@@ -104,23 +69,84 @@ class LinkedList2 {
 		first = null;
 	}
 	
-	public int Delete(SimpleObject element, Comparator<SimpleObject> cc) { //delete the element
-	
-	
+	public String Delete(SimpleObject element, Comparator<SimpleObject> cc) { //delete the element
+		Node2 pre = first; //노드 앞
+		Node2 ptr = first; //뒤
 		
-		return -1;
+		while (pre != null) {
+			//첫 번째 일 때
+			
+			if (cc.compare(first.data, element) == 0) {
+				first = pre.link;
+				return pre.data.toString();
+			}
+			// 중간일 때
+			if(cc.compare(pre.data, element) == 0 && pre.link != null) {
+				ptr.link = pre.link;
+				return pre.data.toString();
+			}
+			//마지막 일 때		
+			if(cc.compare(pre.data, element) == 0 && pre.link == null) {
+				ptr.link = null;
+				return pre.data.toString();
+			}
+			ptr = pre;
+			pre = pre.link;
+		}
+		
+		return "실패";
 	}
 	public void Show() { // 전체 리스트를 순서대로 출력한다.
-	
+		Node2 pre = first;
+		
+		while (pre != null) {
+			System.out.println(pre.data.toString());
+			pre = pre.link;
+		}
+		
 	}
 	public void Add(SimpleObject element, Comparator<SimpleObject> cc) { //임의 값을 삽입할 때 리스트가 오름차순으로 정렬이 되도록 한다 
-	
+		Node2 nd = new Node2(element);
+		Node2 p = first, q = first;
+		
+		if(p == null) { // 첫번째에 노드를 삽입해야 하면 삽입 후 종료
+			first = nd;
+			return;
+		}
+		// 중간에 노드를 삽입
+		while (p != null) { 
+//			System.out.println("element = " + element + "p.data = " + p.data);
+			if (cc.compare(p.data, element) > 0) {
+				if(p == first) {
+					nd.link = p;
+					first = nd;
+				}else {
+					nd.link = p;
+					q.link = nd;
+				}
+				return;
+			} 
+			q = p;
+			p = p.link;			
+		}
+		// 마지막에 노드를 삽입
+		q.link = nd;
+		nd.link = null;
+		return;
 	
 	}
 	public boolean Search(SimpleObject element, Comparator<SimpleObject> cc) { // 전체 리스트를 순서대로 출력한다.
-
+		Node2 pre = first;
+		
+		while(pre != null) {
+			if(cc.compare(pre.data, element) == 0 ) {
+				return true;
+			}
+			pre = pre.link;
+		}
 		
 		return false;
+		
 	}
 }
 public class 객체연결리스트_test {
@@ -186,7 +212,7 @@ public class 객체연결리스트_test {
 	             case Delete :                          // 머리 노드 삭제
 	            	 data = new SimpleObject();
 	            	 data.scanData("삭제", SimpleObject.NO);
-	            	 int num = l.Delete(data, SimpleObject.NO_ORDER);
+	            	 String num = l.Delete(data, SimpleObject.NO_ORDER);
 	            	 System.out.println("삭제된 데이터 성공은 " + num);
 	                    break;
 	             case Show :                           // 꼬리 노드 삭제

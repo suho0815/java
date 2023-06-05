@@ -1,4 +1,4 @@
-
+/*
 	public void Add(int element) // 임의 값을 삽입할 때 리스트가 오름차순으로 정렬이 되도록 한다
 	   {
 	      Node1 newNode = new Node1(element);
@@ -23,4 +23,4 @@
 	         current.link = newNode;
 	      }
 	   }
-	
+	*/

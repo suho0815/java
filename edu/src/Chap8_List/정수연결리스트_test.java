@@ -94,11 +94,14 @@ class LinkedList1 {
 	public boolean Search(int data) { // 전체 리스트를 순서대로 출력한다.
 		Node1 pre = first;
 		
-		if(pre.data == data) {
-			
+		while(pre != null) {
+			if(pre.data == data) {
+				return true;
+			}
+			pre = pre.link;
 		}
 		
-		return true;
+		return false;
 	}
 }
 
